@@ -14,8 +14,8 @@
 # vscode folder
 .vscode/
 
-# github folder
-.github/
+# github instructions
+.github/instructions/
 
 # User-specific files
 *.rsuser
