@@ -5,6 +5,17 @@
 
 # dotenv files
 .env
+.env.*
+!.env.example
+
+# .NET User Secrets
+**/secrets.json
+
+# vscode folder
+.vscode/
+
+# github folder
+.github/
 
 # User-specific files
 *.rsuser

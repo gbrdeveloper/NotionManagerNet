@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/NotionManagerNet/NotionManagerNet.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/src/">
+    <Project Path="tests/src/NotionManagerNet.Tests/NotionManagerNet.Tests.csproj" />
+  </Folder>
+</Solution>
