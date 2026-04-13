@@ -2,9 +2,13 @@
 
 ![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?style=flat-square&logo=dotnet&logoColor=white)
 ![C#](https://img.shields.io/badge/C%23-13-239120?style=flat-square&logo=csharp&logoColor=white)
-![Build](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square&logo=github-actions&logoColor=white)
+![Build](https://github.com/gbrdeveloper/NotionManagerNet/actions/workflows/notion-manager.yml/badge.svg?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-28%20passed-brightgreen?style=flat-square&logo=xunit&logoColor=white)
 ![Coverage](https://img.shields.io/badge/coverage-domain%20100%25-brightgreen?style=flat-square)
+![Last Run](https://img.shields.io/github/last-commit/gbrdeveloper/NotionManagerNet?label=last%20run&style=flat-square&logo=github)
+![Schedule](https://img.shields.io/badge/schedule-mon--fri%2008h%20BRT-blue?style=flat-square&logo=googlecalendar&logoColor=white)
+![Notion](https://img.shields.io/badge/Notion-API-000000?style=flat-square&logo=notion&logoColor=white)
+![Telegram](https://img.shields.io/badge/Telegram-Bot-26A5E4?style=flat-square&logo=telegram&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
 
 Console app em .NET que monitora um banco de dados do **Notion** e classifica automaticamente os cards por prazo, atualizando o status de cada um e enviando um resumo diário pelo **Telegram**.
@@ -103,3 +107,13 @@ tests/
     NotionCardMapperTests.cs
     TelegramServiceTests.cs
 ```
+
+---
+
+## Template Notion
+
+Acesse o template utilizado neste projeto e duplique para o seu Notion:
+
+[![Notion Template](https://img.shields.io/badge/Notion-Abrir%20Template-000000?style=flat-square&logo=notion&logoColor=white)](https://www.notion.so/gbrdev/341d2eefd04a800a8b67f0b0301fc496?v=341d2eefd04a81a5b0a1000cdab018c0&source=copy_link)
+
+> Clique em **Duplicate** no canto superior direito para copiar o template para o seu workspace.
