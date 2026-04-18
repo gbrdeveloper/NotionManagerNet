@@ -61,7 +61,7 @@ jobs:
 
           MESSAGE="$DATE • $COUNT updates • $EMOJI"
 
-          echo "Montando JSON do STATUS..."
+          echo "Atualizando STATUS..."
 
           STATUS_JSON=$(jq -n \
             --arg msg "$MESSAGE" \
@@ -83,8 +83,6 @@ jobs:
               }
             }')
 
-          echo "Atualizando STATUS..."
-
           curl -s -X PATCH https://api.github.com/gists/9e1250a9dfc48a851e250d0645dc8fd1 \
             -H "Authorization: token ${{ secrets.GIST_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
@@ -93,6 +91,13 @@ jobs:
           echo "Buscando histórico..."
 
           HISTORY=$(curl -s https://gist.githubusercontent.com/gbrdeveloper/5784dd5c34015b7488aa6e098de2918b/raw/notion-manager-history.json)
+
+          echo "Validando histórico..."
+
+          if ! echo "$HISTORY" | jq empty 2>/dev/null; then
+            echo "Histórico inválido, recriando..."
+            HISTORY="[]"
+          fi
 
           echo "Montando novo histórico..."
 
