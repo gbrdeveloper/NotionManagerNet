@@ -2,35 +2,100 @@ name: Notion Manager
 
 on:
   schedule:
-    - cron: "0 11 * * 1-5" # Segunda a sexta às 08:00 BRT (UTC-3)
-  workflow_dispatch: # Permite disparo manual pela interface do GitHub
+    - cron: "0 11 * * 1-5"
+  workflow_dispatch:
 
 jobs:
   executar:
-    name: Executar Notion Manager
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      - name: Checkout do repositório
+      - name: Checkout
         uses: actions/checkout@v4.2.2
 
-      - name: Configurar .NET 10
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4.3.1
         with:
           dotnet-version: "10.0.x"
 
-      - name: Restaurar dependências
+      - name: Restore
         run: dotnet restore
 
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
-      - name: Executar
-        run: dotnet run --project src/NotionManagerNet/NotionManagerNet.csproj --configuration Release --no-build
+      - name: Run app
+        id: run_app
+        run: |
+          OUTPUT=$(dotnet run --project src/NotionManagerNet/NotionManagerNet.csproj --configuration Release --no-build)
+
+          echo "$OUTPUT"
+
+          COUNT=$(echo "$OUTPUT" | grep "UPDATED_COUNT" | cut -d '=' -f2)
+
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+      - name: Atualizar badge + histórico
+        if: always()
+        run: |
+          DATE=$(TZ=America/Sao_Paulo date +"%d/%m %H:%M")
+          ISO_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          COUNT="${{ steps.run_app.outputs.count }}"
+          if [ -z "$COUNT" ]; then COUNT="0"; fi
+
+          if [ "${{ job.status }}" == "success" ]; then
+            COLOR="brightgreen"
+            STATUS="success"
+            EMOJI="✅"
+          else
+            COLOR="red"
+            STATUS="failure"
+            EMOJI="❌"
+          fi
+
+          MESSAGE="$DATE • $COUNT updates • $EMOJI"
+
+          echo "Atualizando STATUS..."
+
+          curl -X PATCH https://api.github.com/gists/9e1250a9dfc48a851e250d0645dc8fd1 \
+            -H "Authorization: token ${{ secrets.GIST_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -d "{
+              \"files\": {
+                \"notion-manager-status.json\": {
+                  \"content\": \"{
+                    \\\"schemaVersion\\\": 1,
+                    \\\"label\\\": \\\"notion manager\\\",
+                    \\\"message\\\": \\\"$MESSAGE\\\",
+                    \\\"color\\\": \\\"$COLOR\\\"
+                  }\"
+                }
+              }
+            }"
+
+          echo "Buscando histórico..."
+
+          HISTORY=$(curl -s https://gist.githubusercontent.com/gbrdeveloper/5784dd5c34015b7488aa6e098de2918b/raw/notion-manager-history.json)
+
+          NEW_ENTRY="{\"date\":\"$ISO_DATE\",\"count\":$COUNT,\"status\":\"$STATUS\"}"
+
+          UPDATED=$(echo "$HISTORY" | jq ". |= ([ $NEW_ENTRY ] + .) | .[:20]")
+
+          echo "Salvando histórico..."
+
+          curl -X PATCH https://api.github.com/gists/5784dd5c34015b7488aa6e098de2918b \
+            -H "Authorization: token ${{ secrets.GIST_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -d "{
+              \"files\": {
+                \"notion-manager-history.json\": {
+                  \"content\": $(echo $UPDATED | jq -c .)
+                }
+              }
+            }"

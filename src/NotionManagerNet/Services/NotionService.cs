@@ -23,7 +23,7 @@ public sealed class NotionService(
     private readonly CardClassifier _classifier = classifier;
     private readonly ITelegramService _telegramService = telegramService;
 
-    public async Task ExecutarAsync(CancellationToken cancellationToken = default)
+    public async Task<int> ExecutarAsync(CancellationToken cancellationToken = default)
     {
         var todosCards = await BuscarCardsAsync(cancellationToken);
 
@@ -74,6 +74,8 @@ public sealed class NotionService(
             atualizacoes.Count,
             erros
         );
+
+        return atualizacoes.Count;
     }
 
     private async Task ProcessarCardAsync(

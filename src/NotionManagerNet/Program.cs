@@ -70,8 +70,11 @@ logger.LogInformation("NotionManager iniciado!");
 
 try
 {
-    var notion = provider.GetRequiredService<INotionService>();
-    await notion.ExecutarAsync();
+    var notionService = provider.GetRequiredService<INotionService>();
+    var updatedCount = await notionService.ExecutarAsync();
+
+    Console.WriteLine($"UPDATED_COUNT={updatedCount}");
+
     logger.LogInformation("NotionManager finalizado com sucesso!");
     return 0;
 }

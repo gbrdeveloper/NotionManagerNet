@@ -5,7 +5,7 @@
 ![Build](https://github.com/gbrdeveloper/NotionManagerNet/actions/workflows/notion-manager.yml/badge.svg?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-28%20passed-brightgreen?style=flat-square&logo=xunit&logoColor=white)
 ![Coverage](https://img.shields.io/badge/coverage-domain%20100%25-brightgreen?style=flat-square)
-![Last Run](https://img.shields.io/github/last-commit/gbrdeveloper/NotionManagerNet?label=last%20run&style=flat-square&logo=github)
+![Last Run](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/gbrdeveloper/9e1250a9dfc48a851e250d0645dc8fd1/raw/notion-manager-status.json)
 ![Schedule](https://img.shields.io/badge/schedule-mon--fri%2008h%20BRT-blue?style=flat-square&logo=googlecalendar&logoColor=white)
 ![Notion](https://img.shields.io/badge/Notion-API-000000?style=flat-square&logo=notion&logoColor=white)
 ![Telegram](https://img.shields.io/badge/Telegram-Bot-26A5E4?style=flat-square&logo=telegram&logoColor=white)
